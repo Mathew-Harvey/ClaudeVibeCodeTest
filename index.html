@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathew Harvey | Vibe Developer</title>
+    <style>
+        /* ====== CSS VARIABLES ====== */
+        :root {
+            /* Theme Colors - Edit these to change your color scheme */
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #e74c3c;
+            --secondary-light: #f39c12;
+            --accent: #2ecc71;
+            
+            /* UI Colors */
+            --text: #E2E8F0;
+            --text-dark: #94A3B8;
+            --bg-dark: #0F172A;
+            --bg-darker: #080f1f;
+            --bg-card: rgba(30, 41, 59, 0.5);
+            --border: rgba(148, 163, 184, 0.1);
+            
+            /* Typography */
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', Consolas, monospace;
+            --font-display: 'Outfit', 'Inter', sans-serif;
+            
+            /* Effects */
+            --blur-sm: blur(8px);
+            --blur-md: blur(12px);
+            --blur-lg: blur(16px);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-glow: 0 0 15px rgba(52, 152, 219, 0.5);
+            --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ====== BASE STYLES ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--bg-darker);
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(52, 152, 219, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 50%, rgba(231, 76, 60, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 40% 80%, rgba(46, 204, 113, 0.1) 0%, transparent 25%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            letter-spacing: -0.03em;
+            background-image: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            color: var(--secondary-light);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            font-size: clamp(1rem, 1.2vw, 1.1rem);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition-all);
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--secondary);
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: var(--transition-all);
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            background: rgba(30, 41, 59, 0.5);
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            font-size: 0.9em;
+            color: var(--secondary-light);
+        }
+
+        pre {
+            font-family: var(--font-mono);
+            background: rgba(30, 41, 59, 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        button, .button {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-all);
+            font-family: var(--font-main);
+            text-decoration: none;
+            font-size: 1rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        button:hover, .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        button.secondary, .button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        button.secondary:hover, .button.secondary:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* ====== LAYOUT UTILITIES ====== */
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-gradient {
+            background-image: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: var(--blur-md);
+            -webkit-backdrop-filter: var(--blur-md);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            transition: var(--transition-all);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            box-shadow: var(--shadow-lg), 0 0 15px rgba(52, 152, 219, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: 1fr;
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (max-width: 992px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-cols-2, .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ====== NAVBAR ====== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            transition: var(--transition-all);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: var(--blur-md);
+            -webkit-backdrop-filter: var(--blur-md);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text);
+            font-family: var(--font-display);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .navbar-links a {
+            color: var(--text);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+
+        .navbar-links a:hover {
+            color: var(--primary);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            position: relative;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: var(--text);
+            border-radius: 2px;
+            transition: var(--transition-all);
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 4px;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 11px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 18px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 11px;
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg);
+            top: 11px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--bg-darker);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(-100%);
+                transition: var(--transition-all);
+                z-index: 900;
+            }
+
+            .navbar-links.active {
+                transform: translateX(0);
+            }
+
+            .hamburger {
+                display: block;
+                z-index: 1000;
+            }
+        }
+
+        /* ====== HERO SECTION ====== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-darker);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-title {
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin-bottom: 2.5rem;
+            color: var(--text-dark);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-position: center;
+            background-size: cover;
+            clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+            opacity: 0.6;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background: var(--primary);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            vertical-align: text-top;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* ====== ABOUT SECTION ====== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--primary);
+            border-radius: 1rem;
+            z-index: -1;
+            transition: var(--transition-all);
+        }
+
+        .about-image:hover::before {
+            top: -10px;
+            left: -10px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: var(--transition-all);
+        }
+
+        .skill-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ====== VIBE DEV SECTION ====== */
+        .vibe-dev {
+            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('/api/placeholder/1200/600') center/cover no-repeat;
+            padding: 8rem 0;
+        }
+
+        .vibe-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .vibe-card {
+            height: 100%;
+        }
+
+        .vibe-icon {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .time-comparison {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            gap: 2rem;
+        }
+
+        .time-card {
+            flex: 1;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .time-card.traditional {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+        }
+
+        .time-card.vibe {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(231, 76, 60, 0.2));
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .time-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: var(--font-display);
+        }
+
+        .traditional .time-value {
+            color: var(--text);
+        }
+
+        .vibe .time-value {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .time-comparison {
+                flex-direction: column;
+            }
+        }
+
+        /* ====== PROJECTS SECTION ====== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background-position: center;
+            background-size: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-all);
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: var(--transition-all);
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: var(--transition-all);
+        }
+
+        .project-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .project-links a::after {
+            display: none;
+        }
+
+        .project-content {
+            flex: 1;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .project-tag {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            transition: var(--transition-all);
+        }
+
+        .project-tag:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        /* Project Grid View */
+        .projects-masonry {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .project-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition-all);
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-all);
+        }
+        
+        .masonry-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .masonry-item img {
+            width: 100%;
+            display: block;
+            border-radius: 0.5rem;
+            transition: var(--transition-all);
+        }
+        
+        .masonry-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .masonry-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(8, 15, 31, 0.9), transparent);
+            transition: var(--transition-all);
+        }
+        
+        .masonry-item:hover .masonry-overlay {
+            background: linear-gradient(to top, rgba(8, 15, 31, 0.95), rgba(8, 15, 31, 0.7));
+        }
+        
+        .masonry-title {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .masonry-link {
+            color: var(--secondary-light);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .masonry-link i {
+            font-size: 0.8rem;
+        }
+        
+        .masonry-link::after {
+            display: none;
+        }
+        
+        /* Artificial Life & Simulation Projects */
+        .simulation-section {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('/api/placeholder/1200/800') center/cover no-repeat;
+            padding: 5rem 0;
+            margin-top: 4rem;
+        }
+        
+        .simulation-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .simulation-title {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .simulation-text {
+            color: var(--text-dark);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .simulation-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .simulation-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            aspect-ratio: 16/9;
+        }
+        
+        .simulation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 15, 31, 0.7);
+            z-index: 1;
+            transition: var(--transition-all);
+        }
+        
+        .simulation-card:hover::before {
+            background: rgba(8, 15, 31, 0.5);
+        }
+        
+        .simulation-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-all);
+        }
+        
+        .simulation-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .simulation-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            z-index: 2;
+            transition: var(--transition-all);
+        }
+        
+        .simulation-card:hover .simulation-info {
+            transform: translateY(-10px);
+        }
+        
+        .simulation-name {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .simulation-desc {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: var(--transition-all);
+        }
+        
+        .simulation-card:hover .simulation-desc {
+            max-height: 100px;
+            opacity: 1;
+        }
+        
+        .simulation-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary-light);
+            font-size: 0.9rem;
+        }
+        
+        .simulation-link i {
+            font-size: 0.8rem;
+        }
+        
+        .simulation-link::after {
+            display: none;
+        }
+
+        /* ====== EXPERIENCE SECTION ====== */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 3rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            transition: var(--transition-all);
+            border: 1px solid var(--border);
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg), 0 0 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 15px;
+            height: 15px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .left .timeline-content::before {
+            right: -30px;
+        }
+
+        .right .timeline-content::before {
+            left: -30px;
+        }
+
+        .timeline-date {
+            color: var(--secondary-light);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .timeline-title {
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            color: var(--text-dark);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 0;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 20px;
+            }
+
+            .timeline-content::before {
+                left: -30px !important;
+            }
+        }
+
+        /* ====== TESTIMONIALS SECTION ====== */
+        .testimonials {
+            background: var(--bg-darker);
+            padding: 8rem 0;
+        }
+
+        .testimonial-card {
+            height: 100%;
+            position: relative;
+            padding-top: 2rem;
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .author-info h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .author-title {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        /* ====== CONTACT SECTION ====== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            transition: var(--transition-all);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .contact-content h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ====== FOOTER ====== */
+        footer {
+            background: var(--bg-darker);
+            padding: 4rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: var(--font-display);
+        }
+
+        .footer-logo span {
+            color: var(--primary);
+        }
+
+        .footer-text {
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text);
+            transition: var(--transition-all);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .social-link::after {
+            display: none;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dark);
+            transition: var(--transition-all);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 992px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ====== ADDITIONAL ANIMATIONS ====== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ====== SCROLL TO TOP ====== */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-all);
+            z-index: 100;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ====== LOADER ====== */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--primary);
+            border-right: 3px solid var(--secondary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Particles Animation -->
+    <div class="floating-particles" id="particles"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">Mathew<span>Harvey</span></a>
+            <ul class="navbar-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#vibe-dev">Vibe Dev</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#simulations">Simulations</a></li>
+                <li><a href="#marine">Marine</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Developer & Digital Creator</h1>
+                <p class="hero-subtitle">Crafting <span id="typing-text">simulations</span><span class="typing-cursor"></span></p>
+                <p>Creating engaging digital experiences through simulations, interactive websites, and marine applications. I combine innovative programming with creative visualization to build tools that both educate and inspire.</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="button">View Projects</a>
+                    <a href="#contact" class="button secondary">Get In Touch</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image" style="background-image: url('/api/placeholder/1200/1600');"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title fade-in-up">About Me</h2>
+            <div class="about-grid fade-in-up">
+                <div class="about-image">
+                    <img src="/api/placeholder/500/500" alt="Mathew Harvey">
+                </div>
+                <div class="about-content">
+                    <h3>Hi, I'm <span class="text-gradient">Mathew Harvey</span></h3>
+                    <p>I'm a developer with a passion for creating digital experiences that combine innovative programming with creative visualization. From complex simulations of artificial life to practical marine applications, my work spans the intersection of technology and real-world utility.</p>
+                    <p>With a background in both creative and technical disciplines, I've evolved my approach to embrace AI-assisted development—what I call "vibe development"—to build faster, more efficiently, and with greater creative freedom. My projects reflect my diverse interests in simulation, marine technology, digital publishing, and interactive web experiences.</p>
+                    <h3>My Skills</h3>
+                    <div class="skills-grid">
+                        <!-- Technical Skills -->
+                        <div class="skill-item">HTML/CSS</div>
+                        <div class="skill-item">JavaScript</div>
+                        <div class="skill-item">React</div>
+                        <div class="skill-item">WebGL</div>
+                        <div class="skill-item">Canvas</div>
+                        <div class="skill-item">Simulation</div>
+                        <div class="skill-item">Interactive UI</div>
+                        <div class="skill-item">Node.js</div>
+                        
+                        <!-- Domain Expertise -->
+                        <div class="skill-item">Marine Tech</div>
+                        <div class="skill-item">AI Integration</div>
+                        <div class="skill-item">Digital Publishing</div>
+                        <div class="skill-item">Complex Systems</div>
+                        <div class="skill-item">Cellular Automata</div>
+                        <div class="skill-item">Creative Coding</div>
+                        <div class="skill-item">Data Visualization</div>
+                        <div class="skill-item">Rapid Prototyping</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vibe Developer Section -->
+    <section id="vibe-dev" class="vibe-dev">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Vibe Development: Creating at the Speed of Thought</h2>
+            <p class="text-center fade-in-up">Vibe development is a new paradigm that leverages AI-assisted tools to dramatically accelerate the creation process. It's not just about coding faster—it's about unlocking new creative possibilities by removing technical barriers.</p>
+            
+            <div class="vibe-cards">
+                <div class="glass-card vibe-card fade-in-up">
+                    <div class="vibe-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-center">Rapid Iteration</h3>
+                    <p>With vibe development, I can prototype and refine ideas at unprecedented speeds. What used to take weeks now takes days or even hours, allowing me to experiment more freely and pursue creative tangents that would otherwise be too time-consuming.</p>
+                </div>
+                
+                <div class="glass-card vibe-card fade-in-up">
+                    <div class="vibe-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-center">Focus on Creativity</h3>
+                    <p>By delegating repetitive coding tasks to AI assistants, I can concentrate on the unique creative aspects of each project. This approach lets me spend more time on design, user experience, and conceptual innovation rather than wrestling with implementation details.</p>
+                </div>
+                
+                <div class="glass-card vibe-card fade-in-up">
+                    <div class="vibe-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-center">Broader Exploration</h3>
+                    <p>The efficiency of vibe development allows me to pursue a diverse range of projects that would be impractical with traditional methods. This has enabled me to create simulation tools, marine applications, digital publications, and interactive experiences all within a compressed timeframe.</p>
+                </div>
+            </div>
+            
+            <div class="time-comparison fade-in-up">
+                <div class="time-card traditional">
+                    <h3>Traditional Development</h3>
+                    <div class="time-value">2-3 weeks</div>
+                    <p>Average time to build a custom interactive web application with traditional coding methods.</p>
+                </div>
+                <div class="time-card vibe">
+                    <h3>Vibe Development</h3>
+                    <div class="time-value">2-3 days</div>
+                    <p>The same results achieved through AI-assisted development with more time for creative refinement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Gallery Section -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Project Gallery</h2>
+            <p class="text-center fade-in-up">Explore my diverse collection of projects spanning simulations, marine applications, interactive tools, and creative experiments.</p>
+            
+            <div class="project-filter fade-in-up">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="simulation">Simulations</button>
+                <button class="filter-btn" data-filter="marine">Marine</button>
+                <button class="filter-btn" data-filter="interactive">Interactive</button>
+                <button class="filter-btn" data-filter="publication">Publications</button>
+            </div>
+            
+            <div class="projects-masonry fade-in-up">
+                <!-- Project: Artificial Life -->
+                <div class="masonry-item" data-category="simulation">
+                    <a href="https://mathew-harvey.github.io/Artificial-Life/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Artificial Life">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Artificial Life</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: 3D Ship -->
+                <div class="masonry-item" data-category="marine,interactive">
+                    <a href="https://mathew-harvey.github.io/3dShip/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="3D Ship">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">3D Ship</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: Blurred Photos -->
+                <div class="masonry-item" data-category="interactive">
+                    <a href="https://mathew-harvey.github.io/BlurredPhotos/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Blurred Photos">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Blurred Photos</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: The Bodyweight Gym Online -->
+                <div class="masonry-item" data-category="interactive">
+                    <a href="https://mathew-harvey.github.io/The-Bodyweight-Gym-Online/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="The Bodyweight Gym Online">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">The Bodyweight Gym Online</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: Game of Life -->
+                <div class="masonry-item" data-category="simulation">
+                    <a href="https://mathew-harvey.github.io/game_of_life/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Game of Life">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Game of Life</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: IWHC Manual Companion App -->
+                <div class="masonry-item" data-category="marine,interactive">
+                    <a href="https://mathew-harvey.github.io/IWHCManualCompanionApp/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="IWHC Manual Companion App">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">IWHC Manual Companion App</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: Clean My Ship -->
+                <div class="masonry-item" data-category="marine,interactive">
+                    <a href="https://cleanmyship.netlify.app/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Clean My Ship">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Clean My Ship</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: Recursive Observation -->
+                <div class="masonry-item" data-category="publication">
+                    <a href="https://mathew-harvey.github.io/A-New-Framework-for-Understanding-Consciousness/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Recursive Observation and Biochemical Weighting">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Recursive Observation and Biochemical Weighting</h3>
+                            <span class="masonry-link">View Publication <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: Clean Hulls Clear Waters -->
+                <div class="masonry-item" data-category="marine">
+                    <a href="https://mathew-harvey.github.io/CleanHullsClearWaters/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Clean Hulls Clear Waters">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Clean Hulls Clear Waters</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: Extreme Limit Films -->
+                <div class="masonry-item" data-category="interactive">
+                    <a href="https://mathew-harvey.github.io/ExtremeLimitFilms/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Extreme Limit Films">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Extreme Limit Films</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: Fouling Cost Calculator -->
+                <div class="masonry-item" data-category="marine,interactive">
+                    <a href="https://mathew-harvey.github.io/FoulingCostCalculator/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="Fouling Cost Calculator">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Fouling Cost Calculator</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: The Hull Truth -->
+                <div class="masonry-item" data-category="marine">
+                    <a href="https://mathew-harvey.github.io/TheHullTruth/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="The Hull Truth">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">The Hull Truth</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: bfmpGenerator -->
+                <div class="masonry-item" data-category="interactive">
+                    <a href="https://mathew-harvey.github.io/bfmpGenerator/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="bfmpGenerator">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">bfmpGenerator</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: AgenticBubbleSort -->
+                <div class="masonry-item" data-category="simulation,interactive">
+                    <a href="https://mathew-harvey.github.io/AgenticBubbleSort/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="AgenticBubbleSort">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Agentic Bubble Sort</h3>
+                            <span class="masonry-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: ElodieBook_Two -->
+                <div class="masonry-item" data-category="publication">
+                    <a href="https://mathew-harvey.github.io/ElodieBook_Two/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="ElodieBook_Two">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Elodie Book Two</h3>
+                            <span class="masonry-link">View Publication <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project: ElodieBook_One -->
+                <div class="masonry-item" data-category="publication">
+                    <a href="https://mathew-harvey.github.io/ElodieBook_One/" target="_blank">
+                        <img src="/api/placeholder/600/400" alt="ElodieBook_One">
+                        <div class="masonry-overlay">
+                            <h3 class="masonry-title">Elodie Book One</h3>
+                            <span class="masonry-link">View Publication <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Simulation Projects Section -->
+    <section id="simulations" class="simulation-section">
+        <div class="container">
+            <div class="simulation-header fade-in-up">
+                <h2 class="simulation-title">Digital Life & Simulations</h2>
+                <p class="simulation-text">Exploring the fascinating world of artificial life, cellular automata, and complex systems through interactive simulations and visualizations.</p>
+            </div>
+            
+            <div class="simulation-cards">
+                <!-- Simulation 1: Artificial Life -->
+                <div class="simulation-card fade-in-up">
+                    <img src="/api/placeholder/600/400" alt="Artificial Life">
+                    <div class="simulation-info">
+                        <h3 class="simulation-name">Artificial Life</h3>
+                        <p class="simulation-desc">An interactive simulation exploring emergent behaviors in particle-based artificial life systems.</p>
+                        <a href="https://mathew-harvey.github.io/Artificial-Life/" target="_blank" class="simulation-link">
+                            Experience the simulation <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Simulation 2: Game of Life -->
+                <div class="simulation-card fade-in-up">
+                    <img src="/api/placeholder/600/400" alt="Game of Life">
+                    <div class="simulation-info">
+                        <h3 class="simulation-name">Game of Life</h3>
+                        <p class="simulation-desc">An implementation of Conway's Game of Life, exploring cellular automata and emergent patterns.</p>
+                        <a href="https://mathew-harvey.github.io/game_of_life/" target="_blank" class="simulation-link">
+                            Experience the simulation <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Simulation 3: Agentic Bubble Sort -->
+                <div class="simulation-card fade-in-up">
+                    <img src="/api/placeholder/600/400" alt="Agentic Bubble Sort">
+                    <div class="simulation-info">
+                        <h3 class="simulation-name">Agentic Bubble Sort</h3>
+                        <p class="simulation-desc">Visualizing the bubble sort algorithm through interactive agents, bringing algorithms to life.</p>
+                        <a href="https://mathew-harvey.github.io/AgenticBubbleSort/" target="_blank" class="simulation-link">
+                            Experience the simulation <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Marine Projects Section -->
+    <section id="marine">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Marine Applications</h2>
+            <p class="text-center fade-in-up">I develop specialized tools and applications for the marine industry, focusing on hull maintenance, efficiency, and environmental impact.</p>
+            
+            <div class="projects-grid">
+                <!-- Marine Project 1 -->
+                <div class="glass-card project-card fade-in-up">
+                    <div class="project-image">
+                        <img src="/api/placeholder/600/400" alt="Clean My Ship">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://cleanmyship.netlify.app/" target="_blank" aria-label="View Live Site"><i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Clean My Ship</h3>
+                        <p>A platform connecting boat owners with hull cleaning services to improve vessel efficiency and reduce environmental impact.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">React</span>
+                            <span class="project-tag">Marine</span>
+                            <span class="project-tag">Service Platform</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marine Project 2 -->
+                <div class="glass-card project-card fade-in-up">
+                    <div class="project-image">
+                        <img src="/api/placeholder/600/400" alt="Fouling Cost Calculator">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://mathew-harvey.github.io/FoulingCostCalculator/" target="_blank" aria-label="View Live Site"><i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Fouling Cost Calculator</h3>
+                        <p>An interactive tool that helps vessel owners calculate the financial and environmental costs of hull fouling, promoting regular maintenance.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">Calculator</span>
+                            <span class="project-tag">Marine Efficiency</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marine Project 3 -->
+                <div class="glass-card project-card fade-in-up">
+                    <div class="project-image">
+                        <img src="/api/placeholder/600/400" alt="Clean Hulls Clear Waters">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://mathew-harvey.github.io/CleanHullsClearWaters/" target="_blank" aria-label="View Live Site"><i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Clean Hulls Clear Waters</h3>
+                        <p>An educational platform highlighting the connection between hull maintenance and marine environmental protection.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">HTML/CSS</span>
+                            <span class="project-tag">Environmental</span>
+                            <span class="project-tag">Educational</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="publications" class="testimonials">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Publications & Writing</h2>
+            <p class="text-center fade-in-up">Exploring complex ideas through digital publications and interactive reading experiences.</p>
+            
+            <div class="grid grid-cols-2">
+                <!-- Publication 1 -->
+                <div class="glass-card testimonial-card fade-in-up">
+                    <div class="quote-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Elodie Book Series</h3>
+                    <p class="testimonial-content">A digital publishing experiment that explores narrative storytelling in an interactive web format. The Elodie series showcases how digital mediums can transform the reading experience.</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Books:</h4>
+                            <div class="author-title">
+                                <a href="https://mathew-harvey.github.io/ElodieBook_One/" target="_blank">Elodie Book One</a> | 
+                                <a href="https://mathew-harvey.github.io/ElodieBook_Two/" target="_blank">Elodie Book Two</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Publication 2 -->
+                <div class="glass-card testimonial-card fade-in-up">
+                    <div class="quote-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Recursive Observation and Biochemical Weighting</h3>
+                    <p class="testimonial-content">A framework for understanding consciousness through the lens of recursive observation mechanisms and biochemical weighting systems. This publication explores complex cognitive concepts in an accessible format.</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Publication:</h4>
+                            <div class="author-title">
+                                <a href="https://mathew-harvey.github.io/A-New-Framework-for-Understanding-Consciousness/" target="_blank">View the Framework</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Get In Touch</h2>
+            <div class="contact-grid fade-in-up">
+                <div class="contact-form glass-card">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" class="form-control" placeholder="Tell me about your project"></textarea>
+                    </div>
+                    <button type="submit" class="button">Send Message</button>
+                </div>
+                <div class="contact-info">
+                    <div class="glass-card">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>Email</h4>
+                                <p>contact@mathewharvey.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>Location</h4>
+                                <p>Australia</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>Work Availability</h4>
+                                <p>Open to discussing new projects and collaborations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Mathew<span>Harvey</span></div>
+                    <p class="footer-text">Developer and digital creator specializing in simulations, marine applications, and interactive web experiences.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#vibe-dev">Vibe Dev</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#simulations">Simulations</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Project Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#simulations">Simulations</a></li>
+                        <li><a href="#marine">Marine Applications</a></li>
+                        <li><a href="#publications">Publications</a></li>
+                        <li><a href="#projects">Interactive Tools</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Portfolio Archive</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mathew Harvey. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Portfolio data for reference in JavaScript
+            const portfolioItems = [
+              { title: 'Artificial Life', url: 'https://mathew-harvey.github.io/Artificial-Life/', imageUrl: './images/particleplayground.png' },
+              { title: '3d Ship', url: 'https://mathew-harvey.github.io/3dShip/', imageUrl: './images/3dship.png' },
+              { title: 'Blurred Photos', url: 'https://mathew-harvey.github.io/BlurredPhotos/', imageUrl: './images/blurphoto.png' },
+              { title: 'Old Portfolio', url: 'https://mathew-harvey.github.io/portfolio/', imageUrl: './images/oldPortfolio.png' },
+              { title: 'The Bodyweight Gym Online', url: 'https://mathew-harvey.github.io/The-Bodyweight-Gym-Online/', imageUrl: './images/bwg.png' },
+              { title: 'Game of life', url: 'https://mathew-harvey.github.io/game_of_life/', imageUrl: './images/gameoflife.png' },
+              { title: 'IWHC Manual Companion App', url: 'https://mathew-harvey.github.io/IWHCManualCompanionApp/', imageUrl: './images/IWHCManual.png' },
+              { title: 'Clean My Ship', url: 'https://cleanmyship.netlify.app/', imageUrl: './images/cleanmyship.png' },
+              { title: 'Recursive Observation and Biochemical Weighting', url: 'https://mathew-harvey.github.io/A-New-Framework-for-Understanding-Consciousness/', imageUrl: './images/RecursiveObs.png' },
+              { title: 'Clean Hulls Clear Waters', url: 'https://mathew-harvey.github.io/CleanHullsClearWaters/', imageUrl: './images/CleanHullsClearWaters.png' },
+              { title: 'Extreme Limit Films', url: 'https://mathew-harvey.github.io/ExtremeLimitFilms/', imageUrl: './images/elf.png' },
+              { title: 'Fouling Cost Calculator', url: 'https://mathew-harvey.github.io/FoulingCostCalculator/', imageUrl: './images/costCalc.png' },
+              { title: 'The Hull Truth', url: 'https://mathew-harvey.github.io/TheHullTruth/', imageUrl: './images/hulltruth.png' },
+              { title: 'bfmpGenerator', url: 'https://mathew-harvey.github.io/bfmpGenerator/', imageUrl: './images/bfmpgenerator.png' },
+              { title: 'AgenticBubbleSort', url: 'https://mathew-harvey.github.io/AgenticBubbleSort/', imageUrl: './images/agenticsort.png' },
+              { title: 'ElodieBook_Two', url: 'https://mathew-harvey.github.io/ElodieBook_Two/', imageUrl: './images/ebook2.png' },
+              { title: 'ElodieBook_One', url: 'https://mathew-harvey.github.io/ElodieBook_One/', imageUrl: './images/ebook1.png' }
+            ];
+            
+            // Preloader
+            setTimeout(() => {
+                document.querySelector('.loader-wrapper').classList.add('hidden');
+            }, 1000);
+            
+            // Navbar Toggle
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            
+            // Navbar Scroll Effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // Scroll to Top
+            const scrollTop = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    scrollTop.classList.add('visible');
+                } else {
+                    scrollTop.classList.remove('visible');
+                }
+            });
+            
+            scrollTop.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth Scrolling for Nav Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Close mobile menu if open
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Scroll Animation
+            const animatedElements = document.querySelectorAll('.fade-in-up');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Typing Effect
+            const typingText = document.getElementById('typing-text');
+            const texts = [
+                'simulations',
+                'interactive experiences',
+                'marine applications',
+                'with code & creativity'
+            ];
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typingSpeed = 100;
+            
+            function type() {
+                const currentText = texts[textIndex];
+                
+                if (isDeleting) {
+                    typingText.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                    typingSpeed = 50;
+                } else {
+                    typingText.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                    typingSpeed = 100;
+                }
+                
+                if (!isDeleting && charIndex === currentText.length) {
+                    isDeleting = true;
+                    typingSpeed = 1500; // Pause at the end
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    typingSpeed = 500; // Pause before typing next text
+                }
+                
+                setTimeout(type, typingSpeed);
+            }
+            
+            setTimeout(type, 1000);
+            
+            // Create Floating Particles
+            const particlesContainer = document.getElementById('particles');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 5 + 2;
+                
+                // Random animation duration
+                const duration = Math.random() * 20 + 10;
+                
+                // Random delay
+                const delay = Math.random() * 10;
+                
+                // Random color (primary or secondary)
+                const color = Math.random() > 0.5 ? 'var(--primary)' : 'var(--secondary)';
+                
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.background = color;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Project Filtering
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const masonryItems = document.querySelectorAll('.masonry-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Get filter value
+                    const filterValue = this.getAttribute('data-filter');
+                    
+                    // Filter masonry items
+                    masonryItems.forEach(item => {
+                        const category = item.getAttribute('data-category');
+                        
+                        if (filterValue === 'all' || category.includes(filterValue)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
