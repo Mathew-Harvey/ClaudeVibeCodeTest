@@ -1,0 +1,256 @@
+/* Main stage container */
+#comedy-stage {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0a0a15;
+    font-family: 'Press Start 2P', monospace, Arial, sans-serif;
+}
+
+/* Stage floor */
+.stage-floor {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 25%;
+    background-image: url('comedian_assets/stage.png');
+    background-size: cover;
+    background-position: center bottom;
+    z-index: 1;
+}
+
+/* Curtain styles */
+.curtain {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.curtain-left, .curtain-right {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background-size: cover;
+    transition: transform 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.curtain-left {
+    left: 0;
+    background-image: url('comedian_assets/curtain_left.png');
+    transform-origin: left;
+    transform: translateX(0);
+}
+
+.curtain-right {
+    right: 0;
+    background-image: url('comedian_assets/curtain_right.png');
+    transform-origin: right;
+    transform: translateX(0);
+}
+
+.curtain-left.curtain-open {
+    transform: translateX(-100%);
+}
+
+.curtain-right.curtain-open {
+    transform: translateX(100%);
+}
+
+/* Spotlight effect */
+.spotlight {
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    background-image: url('comedian_assets/spotlight.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.spotlight.spotlight-on {
+    opacity: 1;
+}
+
+/* Comedian character */
+.comedian {
+    position: absolute;
+    bottom: 25%; /* Align with stage floor */
+    left: -100px; /* Start off-screen */
+    width: 192px; /* 2x the original size for better visibility */
+    height: 192px;
+    z-index: 5;
+    transition: left 2s cubic-bezier(0.22, 0.61, 0.36, 1);
+    /* Note: transform is manipulated by JS for movement */
+}
+
+.comedian.on-stage {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Shadow underneath comedian */
+.comedian::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    z-index: 4;
+}
+
+/* Basic state images */
+.comedian-state {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    image-rendering: pixelated; /* Keep the pixel art crisp */
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.comedian-state.active {
+    opacity: 1;
+}
+
+/* Animation containers and frames */
+.animation-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.animation-container.active {
+    opacity: 1;
+}
+
+.animation-frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.animation-frame.active {
+    opacity: 1;
+}
+
+/* Pacing specific styles */
+/* We'll handle the actual movement with JavaScript */
+.comedian.pacing {
+    /* No transition for pacing to allow smoother JS animation */
+    transition: none;
+}
+
+/* Joke bubble */
+.joke-bubble {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 150px;
+    background-image: url('comedian_assets/joke_bubble.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 6;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 30px 30px 30px;
+}
+
+.joke-bubble.active {
+    opacity: 1;
+}
+
+#joke-text {
+    font-family: 'Press Start 2P', monospace, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #000;
+    text-align: center;
+    max-width: 240px;
+    margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #comedy-stage {
+        width: 100%;
+        height: 50%;
+        bottom: 0;
+        top: auto;
+    }
+    
+    .joke-bubble {
+        width: 220px;
+        height: 120px;
+        top: 15%;
+    }
+    
+    #joke-text {
+        font-size: 10px;
+        max-width: 180px;
+    }
+    
+    .comedian {
+        width: 144px; /* Slightly smaller on mobile */
+        height: 144px;
+    }
+}
+
+/* Special effects */
+.stage-floor::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+/* Dust particles in spotlight */
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0.2; }
+    50% { transform: translateY(-20px) translateX(10px); opacity: 0.7; }
+    100% { transform: translateY(-40px) translateX(0); opacity: 0.2; }
+}
+
+.spotlight.spotlight-on::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    animation: float 8s infinite ease-in-out;
+}

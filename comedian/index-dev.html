@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Comedian</title>
+    <link rel="stylesheet" href="./comedian_assets/style-dev.css">
+    <!-- Pixel-style font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- This is the div where you'll add the comedian animation -->
+    <div id="comedy-stage">
+        <!-- Stage and background elements -->
+        <div class="stage-floor"></div>
+        
+        <!-- Curtain that can be pulled back -->
+        <div class="curtain">
+            <div class="curtain-left"></div>
+            <div class="curtain-right"></div>
+        </div>
+        
+        <!-- Spotlight effect -->
+        <div class="spotlight"></div>
+        
+        <!-- Comedian character with different animation states -->
+        <div class="comedian">
+            <!-- Entering state (single frame) -->
+            <img src="comedian_assets/comedian_entering.png" class="comedian-state entering" alt="Comedian entering">
+            
+            <!-- Pacing animations (4 frames each direction) -->
+            <div class="pacing-right animation-container">
+                <img src="comedian_assets/comedian_pacing_right_1.png" class="animation-frame" alt="Pacing right 1">
+                <img src="comedian_assets/comedian_pacing_right_2.png" class="animation-frame" alt="Pacing right 2">
+                <img src="comedian_assets/comedian_pacing_right_3.png" class="animation-frame" alt="Pacing right 3">
+                <img src="comedian_assets/comedian_pacing_right_4.png" class="animation-frame" alt="Pacing right 4">
+            </div>
+            
+            <div class="pacing-left animation-container">
+                <img src="comedian_assets/comedian_pacing_left_1.png" class="animation-frame" alt="Pacing left 1">
+                <img src="comedian_assets/comedian_pacing_left_2.png" class="animation-frame" alt="Pacing left 2">
+                <img src="comedian_assets/comedian_pacing_left_3.png" class="animation-frame" alt="Pacing left 3">
+                <img src="comedian_assets/comedian_pacing_left_4.png" class="animation-frame" alt="Pacing left 4">
+            </div>
+            
+            <!-- Talking animation (3 frames) -->
+            <div class="talking animation-container">
+                <img src="comedian_assets/comedian_talking_1.png" class="animation-frame" alt="Talking 1">
+                <img src="comedian_assets/comedian_talking_2.png" class="animation-frame" alt="Talking 2">
+                <img src="comedian_assets/comedian_talking_3.png" class="animation-frame" alt="Talking 3">
+            </div>
+            
+            <!-- Laughing animation (3 frames) -->
+            <div class="laughing animation-container">
+                <img src="comedian_assets/comedian_laughing_1.png" class="animation-frame" alt="Laughing 1">
+                <img src="comedian_assets/comedian_laughing_2.png" class="animation-frame" alt="Laughing 2">
+                <img src="comedian_assets/comedian_laughing_3.png" class="animation-frame" alt="Laughing 3">
+            </div>
+            
+            <!-- Standing/thinking (single frame) -->
+            <img src="comedian_assets/comedian_pacing_right_1.png" class="comedian-state standing" alt="Comedian standing">
+            <img src="comedian_assets/comedian_thinking.png" class="comedian-state thinking" alt="Comedian thinking">
+        </div>
+        
+        <!-- Joke bubble -->
+        <div class="joke-bubble">
+            <p id="joke-text"></p>
+        </div>
+    </div>
+
+    <!-- Load the JavaScript file -->
+    <script src="./comedian_assets/script-dev.js"></script>
+</body>
+</html>
